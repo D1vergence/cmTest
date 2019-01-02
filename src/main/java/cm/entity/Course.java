@@ -24,4 +24,5 @@ public class Course {
     private Long seminarMainCourseId;
     private List<Round>rounds;
     private List<Klass>klasses;
+
 }

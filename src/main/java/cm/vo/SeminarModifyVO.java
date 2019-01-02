@@ -1,4 +1,5 @@
 package cm.vo;
+import cm.entity.KlassSeminarReportDDL;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -33,6 +34,6 @@ public class SeminarModifyVO {
 
     private Byte roundSerial;
 
-    private List<KlassSeminarReportDDLVO> reportDDLVOList;
+    private List<KlassSeminarReportDDL> reportDDLList;
 
 }

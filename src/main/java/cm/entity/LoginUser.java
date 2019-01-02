@@ -21,6 +21,7 @@ public class LoginUser implements UserDetails {
     private String passWord;
     private Byte isActive;
     private String userRole;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
@@ -38,29 +39,20 @@ public class LoginUser implements UserDetails {
     public String getUsername() {
         return userAccount;
     }
-
-    public void setUserRole(String userRole) {
-        this.userRole = userRole;
-    }
-
     @Override
     public boolean isAccountNonExpired() {
-
         return true;
     }
     @Override
     public boolean isAccountNonLocked() {
-
         return true;
     }
     @Override
     public boolean isCredentialsNonExpired() {
-
         return true;
     }
     @Override
     public boolean isEnabled() {
-
         return true;
     }
 }

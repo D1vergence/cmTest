@@ -12,8 +12,8 @@ import lombok.Data;
 public class KlassRoundVO {
     @JsonProperty("classId")
     private Long klassId;
-    @JsonProperty("classSerial")
-    private Byte klassSerial;
+
+    private Byte classSerial;
 
     private Byte enrollNum;
 }

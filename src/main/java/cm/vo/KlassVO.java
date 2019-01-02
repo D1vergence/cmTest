@@ -1,7 +1,10 @@
 package cm.vo;
 
+import cm.entity.Student;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @Author: Yunfeng Huang
@@ -29,4 +32,6 @@ public class KlassVO {
     public void setKlassName(Integer grade, Byte klassSerial) {
         this.klassName = String.valueOf(grade)+"(" +String.valueOf(klassSerial)+")";
     }
+
+    private List<UserVO> studentVOList;
 }

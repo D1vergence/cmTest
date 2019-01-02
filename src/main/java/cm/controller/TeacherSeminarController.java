@@ -6,6 +6,7 @@ import cm.service.RoundService;
 import cm.service.SeminarService;
 import cm.vo.RoundVO;
 import cm.vo.SeminarInfoVO;
+import cm.vo.SeminarVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 

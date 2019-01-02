@@ -15,5 +15,6 @@ public class UserVO {
     private String role;
     private String name;
     private String email;
+    private Byte isActive;
 
 }

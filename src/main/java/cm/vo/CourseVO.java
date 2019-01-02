@@ -3,6 +3,7 @@ package cm.vo;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: Yunfeng Huang
@@ -14,15 +15,8 @@ public class CourseVO {
 
     private Long id;
     private String name;
-    /*
-    0 主课程 1 从课程
-     */
     private Boolean isShareTeam;
-    /*
-   0 主课程 1 从课程
-    */
     private Boolean isShareSeminar;
 
     List<RoundVO> roundVOList;
-
 }

@@ -1,6 +1,9 @@
 package cm.entity;
 
+import cm.dao.KlassDAO;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
 /**
@@ -15,12 +18,12 @@ public class Team {
     private Long klassId;
     private Long leaderId;
     private String teamName;
-    private Integer teamSerial;
-    private Integer klassSerial;
+    private Byte teamSerial;
+    private Byte klassSerial;
     private Byte status=0;
     private List<Student>students;
 
-    public String getTeamNumber(){return getKlassSerial().toString()+"-"+
-            teamSerial.toString();
-    }
+    @Autowired
+    private KlassDAO klassDAO;
+
 }

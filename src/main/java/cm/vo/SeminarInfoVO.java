@@ -18,6 +18,8 @@ public class SeminarInfoVO {
     @JsonProperty("classId")
     private Long klassId;
 
+    private Byte isVisible;
+
     private Byte roundSerial;
 
     private String seminarName;

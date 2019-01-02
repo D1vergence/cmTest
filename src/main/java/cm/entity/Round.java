@@ -17,4 +17,5 @@ public class Round {
     private Byte reportScoreMethod;
     private Byte questionScoreMethod;
     private List<Seminar>seminars;
+
 }

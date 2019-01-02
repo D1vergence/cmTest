@@ -18,4 +18,5 @@ public class Student {
     private String studentName;
     private String email;
     List<Long>courseIdList;
+
 }

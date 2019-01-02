@@ -2,7 +2,6 @@ package cm.service;
 
 import cm.dao.*;
 import cm.entity.*;
-import cm.utils.CountUtils;
 import cm.vo.RequestListVO;
 import cm.vo.RequestTypeVO;
 import cm.vo.SimpleRequestVO;
@@ -154,7 +153,7 @@ public class RequestService {
                  */
                 List<Team>teamList1=teamDAO.listByCourseId(shareTeamApplication.getMainCourseId());
                 for (Team team:teamList1) {
-                    moveTeam(team,shareTeamApplication.getSubCourseId());
+                    //moveTeam(team,shareTeamApplication.getSubCourseId());
                 }
             }
             shareTeamDAO.updateStatusByShareTeamId(status,teamShareId);
@@ -170,15 +169,15 @@ public class RequestService {
      * @param subCourseId
      * @return void
      */
-    private void moveTeam(Team team,Long subCourseId){
-        List<Long>longList=new ArrayList<>();
-        for (Student student:team.getStudents()) {
-            Long klassId=klassDAO.getKlassIdByCourseIdAndStudentId(subCourseId,student.getId());
-            longList.add(klassId);
-        }
-        team.setKlassId(CountUtils.maxCount(longList));
-        team.setCourseId(subCourseId);
-        teamService.createTeam(team);
-    }
+//    private void moveTeam(Team team,Long subCourseId){
+//        List<Long>longList=new ArrayList<>();
+//        for (Student student:team.getStudents()) {
+//            Long klassId=klassDAO.getKlassIdByCourseIdAndStudentId(subCourseId,student.getId());
+//            longList.add(klassId);
+//        }
+//        team.setKlassId(CountUtils.maxCount(longList));
+//        team.setCourseId(subCourseId);
+//        teamService.createTeam(team);
+//    }
 
 }

@@ -1,5 +1,6 @@
 package cm.controller;
 
+import cm.entity.Student;
 import cm.service.CourseService;
 import cm.service.StudentService;
 import cm.service.TeamService;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,7 +36,7 @@ public class StudentTeamController {
     @RequestMapping(value="",method= RequestMethod.POST)
     public String studentTeam(Long courseId, Model model){
         courseDetailVO=courseService.getCourseById(courseId);
-        student= UserController.userVO;
+        student=UserController.userVO;
         model.addAttribute("teamList",teamService.listTeamByCourseId(courseId));
         model.addAttribute("studentsNotInTeam",teamService.listStudentsNotInTeam(courseId));
         return "student_teams";

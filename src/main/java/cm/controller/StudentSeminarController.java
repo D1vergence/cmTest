@@ -1,13 +1,11 @@
 package cm.controller;
 
-import cm.service.CourseService;
-import cm.service.RoundService;
-import cm.service.SeminarService;
-import cm.service.TeamService;
+import cm.service.*;
 import cm.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -105,7 +104,7 @@ public class StudentSeminarController {
     /////student ppt upload
     @RequestMapping(value = "/PPT",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity studentSeminarPPTUpload(Long klassSeminarId, MultipartFile file, AttendanceVO attendance){
+    public ResponseEntity studentSeminarPPTUpload(Long klassSeminarId, MultipartFile file,AttendanceVO attendance){
         if(seminarService.uploadPPT(klassSeminarId,file,attendance))
             return new ResponseEntity(HttpStatus.OK);
         else

@@ -11,7 +11,6 @@ import lombok.Data;
 @Data
 public class CourseKlassVO {
 
-
     private Long courseId;
 
     private String courseName;
@@ -25,4 +24,6 @@ public class CourseKlassVO {
     public void setKlassName(Integer grade, Byte klassSerial) {
         this.klassName = String.valueOf(grade)+"(" +String.valueOf(klassSerial)+")";
     }
+
+
 }

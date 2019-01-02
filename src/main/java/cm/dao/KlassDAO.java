@@ -88,4 +88,7 @@ public class KlassDAO {
     public Long getKlassIdByCourseIdAndKlassSerial(Long courseId, Long klassSerial){
         return klassMapper.getKlassIdByCourseIdAndKlassSerial(courseId,klassSerial);
     }
+    public Long getCourseIdByKlassId(Long klassId){
+        return klassMapper.getCourseIdByKlassId(klassId);
+    }
 }

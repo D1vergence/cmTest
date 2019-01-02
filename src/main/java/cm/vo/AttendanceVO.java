@@ -34,4 +34,9 @@ public class AttendanceVO {
     public void setTeamName(Byte klassSerial,Byte teamSerial){
         this.teamName=String.valueOf(klassSerial)+"-"+String.valueOf(teamSerial);
     }
+
+    public void setTeamOrder(Integer teamOrder) {
+        byte a= (byte) teamOrder.intValue();
+        this.teamOrder=a;
+    }
 }

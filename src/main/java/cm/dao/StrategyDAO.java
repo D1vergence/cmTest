@@ -169,15 +169,15 @@ public class StrategyDAO {
         return  courseMemberLimitStrategyMapper.createCourseMemberLimitStrategy(courseMemberLimitStrategy);
     }
 
-    public int createMemberLimitStrategy(MemberLimitStrategy memberLimitStrategy){
-        return  memberLimitStrategyMapper.createMemberLimitStrategy(memberLimitStrategy);
-    }
-
-    public int createTeamAndStrategy(MemberLimitStrategy memberLimitStrategy){
-        return  memberLimitStrategyMapper.createMemberLimitStrategy(memberLimitStrategy);
-    }
-
-    public int createTeamOrStrategy(MemberLimitStrategy memberLimitStrategy){
-        return  memberLimitStrategyMapper.createMemberLimitStrategy(memberLimitStrategy);
-    }
+//    public int createMemberLimitStrategy(MemberLimitStrategy memberLimitStrategy){
+//        return  memberLimitStrategyMapper.createMemberLimitStrategy(memberLimitStrategy);
+//    }
+//
+//    public int createTeamAndStrategy(MemberLimitStrategy memberLimitStrategy){
+//        return  memberLimitStrategyMapper.createMemberLimitStrategy(memberLimitStrategy);
+//    }
+//
+//    public int createTeamOrStrategy(MemberLimitStrategy memberLimitStrategy){
+//        return  memberLimitStrategyMapper.createMemberLimitStrategy(memberLimitStrategy);
+//    }
 }

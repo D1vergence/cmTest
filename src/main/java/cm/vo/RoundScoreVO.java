@@ -19,6 +19,9 @@ public class RoundScoreVO<T> {
     @JsonProperty("order")
     private Byte roundNumber;
 
+    /**
+     * 此轮分数
+     */
     @JsonProperty("roundScore")
     private BigDecimal totalScore;
 

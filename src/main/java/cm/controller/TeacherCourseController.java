@@ -1,8 +1,6 @@
 package cm.controller;
 
-import cm.service.CourseService;
-import cm.service.KlassService;
-import cm.service.TeamService;
+import cm.service.*;
 import cm.vo.CourseDetailVO;
 import cm.vo.KlassVO;
 import cm.vo.SeminarScoreVO;

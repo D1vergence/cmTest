@@ -8,4 +8,10 @@ import lombok.Data;
  * @Date: Created in 2018/12/19
  */
 @Data
-public class ShareSeminarApplication extends SimpleShareApplication {}
+public class ShareSeminarApplication extends SimpleShareApplication{
+    private Long id;
+    private Long mainCourseId;
+    private Long subCourseId;
+    private Long subCourseTeacherId;
+    private Byte status;
+}

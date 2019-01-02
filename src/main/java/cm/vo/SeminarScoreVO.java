@@ -15,7 +15,6 @@ public class SeminarScoreVO {
      */
     private String courseName;
 
-
     /**
      * klass
      */
@@ -32,5 +31,10 @@ public class SeminarScoreVO {
     public void setKlassName(Integer grade, Byte klassSerial) {
         this.klassName = String.valueOf(grade)+"("
                 +String.valueOf(klassSerial)+")";
+    }
+
+    public void setTeamOrder(Integer teamOrder) {
+        byte a= (byte) teamOrder.intValue();
+        this.teamOrder=a;
     }
 }

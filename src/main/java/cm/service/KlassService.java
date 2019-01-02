@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import cm.utils.FileReadUtil;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ import java.util.List;
  * @Date: Created in 2018/12/30
  */
 @Service
-public class    KlassService {
+public class KlassService {
 
     @Autowired
     private CourseDAO courseDAO;
@@ -36,13 +37,14 @@ public class    KlassService {
 
     @Autowired
     private KlassSeminarDAO klassSeminarDAO;
+    private KlassVO klass;
 
+    @Autowired
+    private CourseService courseService;
     @Autowired
     private KlassSeminarService klassSeminarService;
-
     @Autowired
     private TeamService teamService;
-
     /**
      * 根据KlassVO，CourseId与TeacherId创建Klass 用在CourseController 新建班级
      * @param klassVO
@@ -87,6 +89,7 @@ public class    KlassService {
      * @param klassId
      * @return java.lang.Long
      */
+
     @Transactional(rollbackFor = Exception.class)
     public Long createKlassStudentByFileAndTeacherIdAndKlassId(MultipartFile multipartFile,Long teacherId,Long klassId){
         Course course=courseDAO.getByKlassIdAndTeacherId(klassId,teacherId);
@@ -126,4 +129,56 @@ public class    KlassService {
         }
         klassDAO.deleteKlass(klass.getId());
     }
+
+    public KlassVO getKlassById(long klassId) {
+        Klass klass=klassDAO.getByKlassId(klassId);
+        KlassVO klassVO=new KlassVO();
+        klassVO.setKlassName(klass.getGrade(),klass.getKlassSerial());
+        klassVO.setKlassId(klassId);
+        return klassVO;
+    }
+
+    public void setKlass(KlassVO klass) {
+        this.klass = klass;
+    }
+
+    public List<KlassVO> listKlassByCourseId(Long course_id) {
+        List<Klass> klasses=klassDAO.getByCourseId(course_id);
+        List<KlassVO> klassVOS=new LinkedList<KlassVO>();
+        for(int i=0;i<klasses.size();i++)
+        {
+            Klass k=klasses.get(i);
+            KlassVO klassVO=new KlassVO();
+            klassVO.setKlassId(k.getId());
+            klassVO.setKlassName(k.getGrade(),k.getKlassSerial());
+            klassVO.setGrade(k.getGrade());
+            klassVO.setKlassLocation(k.getKlassLocation());
+            klassVO.setKlassSerial(k.getKlassSerial());
+            klassVO.setKlassTime(k.getKlassTime());
+            klassVOS.add(klassVO);
+        }
+        return klassVOS;
+    }
+
+    public boolean addKlass(KlassVO klassVO) {
+        Klass klass=new Klass();
+        klass.setGrade(klassVO.getGrade());
+        klass.setKlassLocation(klassVO.getKlassLocation());
+        klass.setKlassSerial(klassVO.getKlassSerial());
+        klass.setKlassTime(klassVO.getKlassTime());
+        klassDAO.createByCourseId(klass,courseService.getCourse().getId());
+        return true;
+    }
+
+    public void deleteKlassById(long klassId){
+        klassDAO.deleteKlass(klassId);
+    }
+
+    public boolean uploadStudentList(long klassId,MultipartFile file){
+        Klass klass=klassDAO.getByKlassId(klassId);
+        List<Student> students=FileReadUtil.listStudentByExcel(file);
+        klassDAO.createKlassStudentListByStudentListAndKlassIdAndCourseId(students,klassId,klass.getId());
+        return true;
+    }
+
 }

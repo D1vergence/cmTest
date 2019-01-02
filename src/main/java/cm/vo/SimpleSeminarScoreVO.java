@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
-/**
+/**某一次讨论课的分数
  * @Author: Yunfeng Huang
  * @Description:
  * @Date: Created in 2018/12/21
@@ -23,9 +23,13 @@ public class SimpleSeminarScoreVO {
     private Byte seminarSerial;
 
     private String introduction;
+    /**
+     * seminarScore
+     */
 
     private BigDecimal totalScore;
 
+    @JsonProperty("preScore")
     private BigDecimal presentationScore;
 
     private BigDecimal questionScore;

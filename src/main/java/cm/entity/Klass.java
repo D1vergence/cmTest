@@ -17,4 +17,5 @@ public class Klass {
     private String klassLocation;
     private List<Team>teams;
     private List<Student>students;
+
 }

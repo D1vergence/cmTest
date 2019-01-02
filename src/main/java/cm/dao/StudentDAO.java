@@ -115,4 +115,9 @@ public class StudentDAO {
     public List<Student> listNoTeamStudentByCourseId(Long courseId){
         return studentMapper.listNoTeamStudentsByCourseId(courseId);
     }
+
+    public List<Student> listNoTeamStudentByKlassId(Long klassId){
+        return studentMapper.listNoTeamStudentsByKlassId(klassId);
+    }
+
 }

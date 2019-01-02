@@ -1,15 +1,23 @@
 package cm.controller;
 
+import cm.entity.*;
 import cm.service.CourseService;
+import cm.service.KlassService;
+import cm.service.SeminarService;
+import cm.service.StudentService;
 import cm.vo.CourseVO;
 import cm.vo.KlassVO;
 import cm.vo.SeminarScoreVO;
 import cm.vo.UserVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller

@@ -1,15 +1,15 @@
 package cm.controller;
 
-import cm.dao.QuestionDAO;
 import cm.dao.StudentDAO;
 import cm.dao.TeamDAO;
+import cm.dao.QuestionDAO;
 import cm.entity.Attendance;
 import cm.entity.Question;
-import cm.entity.Student;
 import cm.entity.Team;
+import cm.entity.Student;
 import cm.service.AttendanceService;
-import cm.service.StudentService;
 import cm.service.TeamService;
+import cm.service.StudentService;
 import cm.vo.NextAttendanceVO;
 import cm.vo.SelectedQuestionVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +18,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
+import java.util.*;
+import java.lang.Long;
 /**
  * @Author: Yunfeng Huang
  * @Description:
@@ -98,7 +98,7 @@ public class WebSocketController {
             selectedQuestionVO.setStudentAccount(student.getAccount());
             TeamService teamService = null;
             Team team = teamService.getByTeamId(selectedQuestion.getTeamId());
-            selectedQuestionVO.setTeamNumber(team.getKlassSerial(), Integer.valueOf(team.getTeamSerial()));
+            selectedQuestionVO.setTeamNumber(Integer.valueOf(team.getKlassSerial()), Integer.valueOf(team.getTeamSerial()));
 
             for(int i=0;i<tempQuestionList.size();i++)
             {
@@ -131,7 +131,7 @@ public class WebSocketController {
             nextAttendanceVO.setTeamId(String.valueOf(nextAttendance.getTeamId()));
             TeamService teamService = null;
             Team team = teamService.getByTeamId(nextAttendance.getTeamId());
-            nextAttendanceVO.setTeamNumber(team.getKlassSerial(), Integer.valueOf(team.getTeamSerial()));
+            nextAttendanceVO.setTeamNumber(Integer.valueOf(team.getKlassSerial()), Integer.valueOf(team.getTeamSerial()));
             nextAttendanceVO.setStatus(1);
             return nextAttendanceVO;
         }
