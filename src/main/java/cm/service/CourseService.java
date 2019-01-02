@@ -30,7 +30,6 @@ public class CourseService {
 	@Autowired
 	private KlassSeminarDAO klassSeminarDAO;
 
-	private CourseDetailVO course=new CourseDetailVO();
 	@Autowired
 	TeacherService teacherService;
 
@@ -179,23 +178,6 @@ public class CourseService {
         return courseDAO.listByStudentId(studentId);
     }
 
-	public void setCourse(Long courseId)
-	{
-		CourseDetailVO courseDetailVO=new CourseDetailVO();
-		Course course=courseDAO.getByCourseId(courseId);
-		courseDetailVO.setCourseName(course.getCourseName());
-		courseDetailVO.setTeamEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(course.getTeamEndTime()));
-		courseDetailVO.setTeamStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(course.getTeamStartTime()));
-		courseDetailVO.setReportPercentage(course.getReportPercentage());
-		courseDetailVO.setQuestionPercentage(course.getQuestionPercentage());
-		courseDetailVO.setPresentationPercentage(course.getPresentationPercentage());
-		courseDetailVO.setIntroduction(course.getIntroduction());
-		this.course = courseDetailVO;
-	}
-
-    public CourseDetailVO getCourse() {
-        return course;
-    }
 
 	public List<Course> listCourseByTeacherId() {
 		Teacher teacher=teacherService.t;

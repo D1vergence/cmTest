@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: QWERasdf1234
-    url: jdbc:mysql://localhost:3306/standard_seminar_system?useSSL=false&serverTimezone=UTC&characterEncoding=utf-8
+    url: jdbc:mysql://47.107.254.129:3306/standard_seminar_system?useSSL=false&serverTimezone=UTC&characterEncoding=utf-8
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       minimum-idle: 5
@@ -15,8 +15,8 @@ spring:
       connection-timeout: 30000
       connection-test-query: SELECT 1
 pptPath: /ooad/ppt/
-pptPathServer: E://ooadFile//ppt//
+pptPathInServer: E://ooadFile//ppt//
 reportPath: /ooad/report/
-reportPathServer: E://ooadFile//report//
+reportPathInServer: E://ooadFile//report//
 defaultUrl: http://localhost:8081/#
 defaultPcUrl: http://localhost:8082

@@ -15,7 +15,6 @@ import java.util.List;
 public class TeacherService {
     @Autowired
     private TeacherDAO teacherDAO;
-    private static UserVO teacher=new UserVO();
     Teacher t=null;
 
     public Teacher findTeacherByAccount(String account){
@@ -32,12 +31,13 @@ public class TeacherService {
             return false;
     }
 
-    public boolean modifyEmail(String email){
+    public boolean modifyEmail(String email,UserVO teacher){
         teacherDAO.modifyEmailByTeacherId(email,teacher.getId());
+        teacher.setEmail(email);
         return true;
     }
 
-    public boolean modifyPwd(String password){
+    public boolean modifyPwd(String password,UserVO teacher){
         teacherDAO.modifyPasswordByTeacherId(password,teacher.getId());
         return true;
     }
@@ -83,9 +83,12 @@ public class TeacherService {
         return teacher;
     }
 
-    public boolean activate(String password, String password1) {
-        if(password.equals(password1))
+    public boolean activate(String password, String password1,UserVO teacher) {
+        if(password.equals(password1)) {
+            teacherDAO.activateByTeacherId(password,teacher.getId());
+            teacher.setIsActive(Byte.valueOf((byte)1));
             return true;
+        }
         else return false;
     }
 
@@ -105,9 +108,5 @@ public class TeacherService {
         if(t.getIsActive()==1)
             return 1;
         else return 0;
-    }
-
-    public UserVO getTeacher() {
-        return teacher;
     }
 }

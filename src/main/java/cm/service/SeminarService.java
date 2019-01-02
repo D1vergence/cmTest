@@ -31,22 +31,13 @@ public class SeminarService {
     @Autowired
     private TeamDAO teamDAO;
 
-    static Course course;
-    static Klass klass;
-    static KlassSeminar klassSeminar;
-
-    public boolean addSeminar(Seminar seminar){
-
-        seminarDAO.createSeminar(seminar);
-        return true;
-    }
 
     public KlassSeminar findKlassSeminarById(Long klassId, Long seminarId){
         return klassSeminarDAO.getBySeminarIdAndKlassId(seminarId,klassId);
     }
 
 
-    public Seminar TransferSeminarInfoToSeminar(SeminarInfoVO seminarInfoVO){
+    public Seminar TransferSeminarInfoToSeminar(SeminarInfoVO seminarInfoVO,CourseDetailVO course){
         Seminar seminar=new Seminar();
         Timestamp startTime=Timestamp.valueOf(seminarInfoVO.getEnrollStartTime());
         Timestamp endTime=Timestamp.valueOf(seminarInfoVO.getEnrollEndTime());
@@ -60,13 +51,13 @@ public class SeminarService {
 
         return seminar;
     }
-    public void addSeminar(SeminarInfoVO seminarInfoVO){
-        Seminar seminar=TransferSeminarInfoToSeminar(seminarInfoVO);
+    public void addSeminar(SeminarInfoVO seminarInfoVO,CourseDetailVO courseDetailVO){
+        Seminar seminar=TransferSeminarInfoToSeminar(seminarInfoVO,courseDetailVO);
         seminarDAO.createSeminar(seminar);
     }
 
-    public void updateSeminar(SeminarInfoVO seminarInfoVO){
-        Seminar seminar=TransferSeminarInfoToSeminar(seminarInfoVO);
+    public void updateSeminar(SeminarInfoVO seminarModifyVO,CourseDetailVO courseDetailVO){
+        Seminar seminar=TransferSeminarInfoToSeminar(seminarModifyVO,courseDetailVO);
         seminarDAO.modifySeminar(seminar);
     }
 
@@ -103,13 +94,6 @@ public class SeminarService {
         return true;
     }
 
-    public void setCourse(Long courseId) {
-        this.course = courseDAO.getByCourseId(courseId);
-    }
-
-    public void setKlass(Long klassId) {
-        this.klass = klassDAO.getByKlassId(klassId);
-    }
 
     public Map<CourseVO,KlassVO> listCourseAndKlass(UserVO student) {
         List<Course> courses=courseDAO.listByStudentId(student.getId());
@@ -136,7 +120,7 @@ public class SeminarService {
         return seminarInfoVO;
     }
 
-    public SeminarModifyVO getklassSeminarVO(Long klassId, Long seminarId) {
+    public SeminarModifyVO getSeminarModifyVO(Long klassId, Long seminarId) {
         KlassSeminar klassSeminar=findKlassSeminarById(klassId,seminarId);
         SeminarModifyVO seminarModifyVO=new SeminarModifyVO();
         Long courseId=klassDAO.getCourseIdByKlassId(klassId);
@@ -269,7 +253,7 @@ public class SeminarService {
         return attendanceList.get(0).getId();
     }
 
-    public SeminarInfoVO getSeminarInfoING() {
+    public SeminarInfoVO getSeminarInfoING(CourseDetailVO course) {
         List<Round> roundList=roundDAO.listByCourseId(course.getId());
         for(int i=0;i<roundList.size();i++) {
             Round round=roundList.get(i);
@@ -309,23 +293,15 @@ public class SeminarService {
     return klassSeminarVO;
     }
 
-    public void setKlasSeminar(KlassSeminarVO klassSeminarVO) {
-        klassSeminar.setId(klassSeminarVO.getId());
-    }
-
-    public SeminarInfoVO getSeminarInfo()
-    {
-        return getSeminarInfo(klassSeminar.getId());
-    }
-
-    public void scoreReport(List<BigDecimal> score) {
-        List<Attendance> attendanceList=attendanceDAO.listByKlassSeminarId(klassSeminar.getId());
+    public void scoreReport(List<BigDecimal> score,SeminarInfoVO seminarInfoVO) {
+        KlassSeminarVO tmp=getKlassSeminarVO(seminarInfoVO.getKlassId(),seminarInfoVO.getSeminarId());
+        List<Attendance> attendanceList=attendanceDAO.listByKlassSeminarId(tmp.getId());
         for(int i=0;i<attendanceList.size();i++) {
             //获取展示的所有小组
             Team team=teamDAO.getByAttendanceId(attendanceList.get(i).getId());
             //得到所有当前分数
-            SeminarScore seminarScore=seminarScoreDAO.getByKlassSeminarIdAndTeamId(klassSeminar.getId(),team.getId());
-            seminarScoreDAO.updateSeminarScore(seminarScore, klassSeminar.getId(),team.getId());
+            SeminarScore seminarScore=seminarScoreDAO.getByKlassSeminarIdAndTeamId(tmp.getId(),team.getId());
+            seminarScoreDAO.updateSeminarScore(seminarScore, tmp.getId(),team.getId());
         }
     }
 

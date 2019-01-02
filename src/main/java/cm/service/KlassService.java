@@ -1,6 +1,7 @@
 package cm.service;
 
 import cm.entity.*;
+import cm.vo.CourseDetailVO;
 import cm.vo.KlassVO;
 import org.springframework.stereotype.Service;
 import cm.dao.CourseDAO;
@@ -37,7 +38,6 @@ public class KlassService {
 
     @Autowired
     private KlassSeminarDAO klassSeminarDAO;
-    private KlassVO klass;
 
     @Autowired
     private CourseService courseService;
@@ -138,9 +138,6 @@ public class KlassService {
         return klassVO;
     }
 
-    public void setKlass(KlassVO klass) {
-        this.klass = klass;
-    }
 
     public List<KlassVO> listKlassByCourseId(Long course_id) {
         List<Klass> klasses=klassDAO.getByCourseId(course_id);
@@ -160,13 +157,13 @@ public class KlassService {
         return klassVOS;
     }
 
-    public boolean addKlass(KlassVO klassVO) {
+    public boolean addKlass(KlassVO klassVO, CourseDetailVO courseDetailVO) {
         Klass klass=new Klass();
         klass.setGrade(klassVO.getGrade());
         klass.setKlassLocation(klassVO.getKlassLocation());
         klass.setKlassSerial(klassVO.getKlassSerial());
         klass.setKlassTime(klassVO.getKlassTime());
-        klassDAO.createByCourseId(klass,courseService.getCourse().getId());
+        klassDAO.createByCourseId(klass,courseDetailVO.getId());
         return true;
     }
 

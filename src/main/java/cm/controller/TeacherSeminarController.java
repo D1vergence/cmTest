@@ -4,9 +4,7 @@ import cm.service.CourseService;
 import cm.service.KlassService;
 import cm.service.RoundService;
 import cm.service.SeminarService;
-import cm.vo.RoundVO;
-import cm.vo.SeminarInfoVO;
-import cm.vo.SeminarVO;
+import cm.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,26 +16,30 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/cm/teacher/course/seminar")
 public class TeacherSeminarController {
     @Autowired
-    public static SeminarService seminarService;
+    private SeminarService seminarService;
     @Autowired
-    public static RoundService roundService;
+    private RoundService roundService;
+    @Autowired
+    private CourseService courseService;
+    @Autowired
+    private KlassService klassService;
 
-    KlassService klassService=TeacherCourseController.klassService;
-    CourseService courseService= TeacherCourseController.courseService;
-
+    CourseDetailVO courseDetailVO;
+    SeminarInfoVO seminarInfoVO;
     ////////讨论课管理
     ///////////讨论课列表
     @RequestMapping(value = "",method = RequestMethod.POST)
     public String teacherSeminar(Long courseId,Model model){
-        courseService.setCourse(courseId);
+        courseDetailVO=courseService.getCourseById(courseId);
         model.addAttribute("roundList",roundService.listRoundByCourseId(courseId));
         model.addAttribute("klassList",klassService.listKlassByCourseId(courseId));
-        model.addAttribute("courseName",courseService.getCourse().getCourseName());
+        model.addAttribute("courseName",courseDetailVO.getCourseName());
         return "teacher_seminarList";
     }
 
@@ -45,7 +47,7 @@ public class TeacherSeminarController {
     @RequestMapping(value ="/course",method = RequestMethod.GET)
     public String teacherSeminarCourseList(Model model){
         model.addAttribute("courseList",courseService.listCourseByTeacherId());
-        model.addAttribute("seminarInfo",seminarService.getSeminarInfoING());
+        model.addAttribute("seminarInfo",seminarService.getSeminarInfoING(courseDetailVO));
         return "teacher_seminar_courseList";
     }
 
@@ -69,23 +71,30 @@ public class TeacherSeminarController {
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity teacherSeminarCreate(@RequestBody SeminarInfoVO seminar){
-        seminarService.addSeminar(seminar);
+        seminarService.addSeminar(seminar,courseDetailVO);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     //////////讨论课详情
     @RequestMapping(value = "/info",method = RequestMethod.POST)
     public String teacherSeminar(long klassId,long seminarId,Model model){
-        seminarService.setKlasSeminar(seminarService.getKlassSeminarVO(klassId,seminarId));
-        model.addAttribute("Seminar",seminarService.getSeminarInfo(seminarId));
+        seminarInfoVO=seminarService.getSeminarInfo(klassId,seminarId);
+        model.addAttribute("Seminar",seminarInfoVO);
         return "teacher_seminarInfo";
+    }
+
+    @RequestMapping(value = "/modify",method = RequestMethod.GET)
+    public String teacherSeminarModify(Model model){
+        model.addAttribute("seminarModify",seminarService.getSeminarModifyVO(seminarInfoVO.getKlassId(),seminarInfoVO.getSeminarId()));
+        return "teacher_seminar_modify";
     }
 
     /////////讨论课修改
     @RequestMapping(value="",method = RequestMethod.PATCH)
     @ResponseBody
     public ResponseEntity teacherSeminarUpdate(@RequestBody SeminarInfoVO seminar){
-        seminarService.updateSeminar(seminar);
+        seminarInfoVO=seminar;
+        seminarService.updateSeminar(seminar,courseDetailVO);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -100,21 +109,21 @@ public class TeacherSeminarController {
     ///////////////讨论课报名列表
     @RequestMapping(value = "/enrollList",method = RequestMethod.POST)
     public String teacherSeminarEnrollList(Model model){
-        model.addAttribute("seminarInfo",seminarService.getSeminarInfo());
+        model.addAttribute("seminarInfo",seminarInfoVO);
         return "teacher_seminar_enrollList";
     }
 
     ///////////////////讨论课正在进行websocket
     @RequestMapping(value = "/progressing",method = RequestMethod.GET)
     public String teacherSeminarProgressing(Model model){
-        model.addAttribute("seminarInfo",seminarService.getSeminarInfo());
+        model.addAttribute("seminarInfo",seminarInfoVO);
         return "teacher_seminar_progressing";
     }
 
     //////讨论课结束报告页
     @RequestMapping(value = "/finished",method = RequestMethod.GET)
     public String teacherSeminarFinished(Model model){
-        model.addAttribute("seminarInfo",seminarService.getSeminarInfo());
+        model.addAttribute("seminarInfo",seminarInfoVO);
         return "teacher_seminar_finished";
     }
 
@@ -122,9 +131,18 @@ public class TeacherSeminarController {
     @RequestMapping(value = "/finished",method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity teacherSeminarReportScoreSubmit(List<BigDecimal> score){
-        seminarService.scoreReport(score);
+        seminarService.scoreReport(score,seminarInfoVO);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    ///////讨论课展示提问打分
+    @RequestMapping(value = "/progressing/end",method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity teacherSeminarProcessingScore(Map<BigDecimal, Map<Long,BigDecimal>> score){
+        //seminarService.scoreSeminar(score,seminarInfoVO);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 
 
     /////////////////讨论课分数

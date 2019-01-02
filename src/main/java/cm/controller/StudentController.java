@@ -23,7 +23,7 @@ public class StudentController {
     @Autowired
     StudentService studentService;
 
-    UserVO student=UserController.userVO;
+    UserVO student;
 
     ///////////////student activation get
     @RequestMapping(value = "/activation",method = RequestMethod.GET)
@@ -34,7 +34,7 @@ public class StudentController {
     /////////////student activation submit
     @RequestMapping(value="/activation",method = RequestMethod.POST)
     public String studentActivationSubmit(String password,String password1,String email){
-        if(studentService.active(password,password1,email))
+        if(studentService.active(password,password1,email,UserController.userVO))
             return "redirect:/cm/student/index";
         else
             return "redirect:/cm/student/activation";
@@ -46,6 +46,7 @@ public class StudentController {
         if (studentService.getIs_active(student)==0)
                 return "redirect:/cm/student/activation";
         else{
+            student=UserController.userVO;
             model.addAttribute("curStudent",student);
             return "student_index";
         }

@@ -2,6 +2,7 @@ package cm.controller;
 
 import cm.entity.*;
 import cm.service.*;
+import cm.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,8 @@ public class TeacherController {
     @Autowired
     TeacherService teacherService;
 
+    UserVO teacher;
+
     @RequestMapping(value = "/activation", method = RequestMethod.GET)
     public String teacherActivation() {
         return "teacher_activation";
@@ -29,7 +32,7 @@ public class TeacherController {
 
     @RequestMapping(value = "/activation", method = RequestMethod.POST)
     public String teacherActivationSubmit(String password, String password1) {
-        if (teacherService.activate(password, password1)) {
+        if (teacherService.activate(password, password1,UserController.userVO)) {
             return "redirect:/cm/teacher/index";
         }
         else
@@ -38,11 +41,11 @@ public class TeacherController {
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String teacherIndex(Model model) {
-
         if (teacherService.getIs_active() == 0)
             return "redirect:/cm/teacher/activation";
         else {
-            model.addAttribute("curTeacher", teacherService.getTeacher());
+            teacher=UserController.userVO;
+            model.addAttribute("curTeacher", teacher);
             return "teacher_main";
         }
     }
@@ -50,7 +53,7 @@ public class TeacherController {
     //////////////////////////////////////账户设置
     @RequestMapping(value = "/setting", method = RequestMethod.GET)
     public String teacherAccountSet(Model model) {
-        model.addAttribute("curUser", teacherService.getTeacher());
+        model.addAttribute("curUser", teacher);
         return "teacher_setting";
     }
 
@@ -64,7 +67,7 @@ public class TeacherController {
     @RequestMapping(value = "/setting/modifyEmail", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity teacherModifyEmailSubmit(String email) {
-        if (teacherService.modifyEmail(email))
+        if (teacherService.modifyEmail(email,teacher))
             return new ResponseEntity(HttpStatus.OK);
         else
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -80,7 +83,7 @@ public class TeacherController {
     @RequestMapping(value = "/setting/modifyPwd", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity teacherModifyPwdSubmit(String password) {
-        if (teacherService.modifyPwd(password))
+        if (teacherService.modifyPwd(password,teacher))
             return new ResponseEntity(HttpStatus.OK);
         else
             return new ResponseEntity(HttpStatus.CONFLICT);
