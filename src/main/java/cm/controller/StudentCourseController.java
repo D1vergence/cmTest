@@ -23,7 +23,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/cm/student/course")
 public class StudentCourseController {
-
+    @Autowired
     private CourseService courseService;
 
     UserVO student= UserController.userVO;

@@ -46,6 +46,7 @@ public class StudentService {
 
     public boolean modifyStudentEmail(String email,UserVO student){
         studentDAO.modifyEmailByStudentId(email,student.getId());
+        student.setEmail(email);
         return true;
     }
 
@@ -67,12 +68,17 @@ public class StudentService {
         studentDAO.modifyStudent(student);
     }
 
-    public boolean active(String password,String password1,String email)
+    public boolean active(String password,String password1,String email,UserVO student)
     {
-        if(password.equals(password1))
-        return true;
-        else
+        if(password.equals(password1)) {
+            studentDAO.activateByStudentId(password, email, student.getId());
+            student.setEmail(email);
+            student.setIsActive(Byte.valueOf((byte)1));
+            return true;
+        }
+        else{
             return false;
+        }
     }
 
     public Byte getIs_active(UserVO s)

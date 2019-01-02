@@ -65,7 +65,7 @@ public class StudentSeminarController {
     public String studentSeminarEnrollList(Model model,Long klassSeminarId){
         SeminarInfoVO seminarInfoVO=seminarService.getSeminarInfo(klassSeminarId);
         model.addAttribute("seminarInfo",seminarInfoVO);
-        model.addAttribute("team",teamService.getMyTeam(courseService.getCourse().getId(),student.getId()));
+        model.addAttribute("team",teamService.getMyTeam(courseDetailVO.getId(),student.getId()));
 
         return "student_seminar_enrollList";
     }
@@ -130,6 +130,8 @@ public class StudentSeminarController {
     public String studentSeminarProgress(Long klassSeminarId,Model model){
         model.addAttribute("seminarInfo",seminarService.getSeminarInfo(klassSeminarId));
         model.addAttribute("teamId",seminarService.getPresentatingTeamId(klassSeminarId));
+        model.addAttribute("myId",student.getId());
+        model.addAttribute("klassSeminarId",klassSeminarId);
         return "student_seminar_progress";
     }
 }

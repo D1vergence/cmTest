@@ -19,11 +19,13 @@ import java.util.Map;
 @RequestMapping("/cm/teacher/course")
 public class TeacherCourseController {
     @Autowired
-    public static CourseService courseService;
+    private CourseService courseService;
     @Autowired
-    public static TeamService teamService;
+    private TeamService teamService;
     @Autowired
-    public static KlassService klassService;
+    private KlassService klassService;
+
+    public static CourseDetailVO courseDetailVO;
 
     //课程管理
     @RequestMapping(method= RequestMethod.GET)
@@ -35,8 +37,8 @@ public class TeacherCourseController {
     /////////////////////////////////////课程详情页
     @RequestMapping(value="/info",method = RequestMethod.POST)
     public String teacherCourseInfo(Long courseId,Model model){
-        courseService.setCourse(courseId);
-        model.addAttribute("curCourse",courseService.getCourse());
+        courseDetailVO=courseService.getCourseById(courseId);
+        model.addAttribute("curCourse",courseDetailVO);
         //model.addAttribute("TeamNeedVO",courseService.getTeamNeedVO(courseId));
         return "teacher_courseInfo";
     }
@@ -75,7 +77,7 @@ public class TeacherCourseController {
     //////////////学生组队
     @RequestMapping(value="/teamList",method = RequestMethod.POST)
     public String teacherTeamList(Long courseId,Model model){
-        courseService.setCourse(courseId);
+        courseDetailVO=courseService.getCourseById(courseId);
         model.addAttribute("teamList",teamService.listTeamByCourseId(courseId));
         return "teacher_teamList";
     }
@@ -83,7 +85,7 @@ public class TeacherCourseController {
     //////学生成绩
     @RequestMapping(value = "/grade",method = RequestMethod.POST)
     public String teacherGrade(Long courseId,Model model){
-        courseService.setCourse(courseId);
+        courseDetailVO=courseService.getCourseById(courseId);
         Map<String, List<SeminarScoreVO>> maps=courseService.listScoreForTeacher(courseId);
         model.addAttribute("roundNameAndSeminarScore",maps);
         return "teacher_grade.html";
@@ -92,7 +94,7 @@ public class TeacherCourseController {
     ////////班级管理
     @RequestMapping(value="/klassList",method = RequestMethod.POST)
     public String teacherKlassManage(Long course_id,Model model){
-        courseService.setCourse(course_id);
+        courseDetailVO=courseService.getCourseById(course_id);
         model.addAttribute("klassList",klassService.listKlassByCourseId(course_id));
         return "teacher_klassList";
     }
@@ -106,7 +108,7 @@ public class TeacherCourseController {
     @RequestMapping(value = "/klass/create",method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity teacherKlassCreateSubmit(@RequestBody KlassVO klassVO){
-        if(klassService.addKlass(klassVO))
+        if(klassService.addKlass(klassVO,courseDetailVO))
             return new ResponseEntity(HttpStatus.OK);
         else
             return new ResponseEntity(HttpStatus.CONFLICT);

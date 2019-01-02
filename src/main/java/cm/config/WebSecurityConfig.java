@@ -1,10 +1,10 @@
 package cm.config;
 
-import cm.config.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -14,7 +14,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
-        http
+        /*http
                 .addFilter(new JwtFilter(authenticationManager()))
                 .authorizeRequests()
                 .antMatchers("/", "/cm/login").permitAll()
@@ -37,7 +37,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
         http
                 .rememberMe()
-                .rememberMeParameter("cm_remember");
+                .rememberMeParameter("cm_remember");*/
+
+        http
+                .authorizeRequests()
+                .antMatchers("/","/login","/login/submit").permitAll()
+                .antMatchers("/static/**").permitAll()
+                .antMatchers("/cm/**").permitAll()
+                .antMatchers("/cm/pc/admin/**").hasRole("admin")
+                .antMatchers("/cm/teacher/**").hasRole("teacher")
+                .antMatchers("/cm/student/**").hasRole("student")
+                .anyRequest()
+                .authenticated()
+
+                .and()
+                .cors()
+                .and()
+                .csrf().disable();
 
     }
 
@@ -48,4 +64,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("user").password("password").roles("USER");
     }
 
+    @Override
+    public void configure(WebSecurity web) throws Exception{
+        web
+                .ignoring()
+                .antMatchers("/css/*.css","/js/*.js");
+    }
 }

@@ -45,8 +45,8 @@ public class StudentTeamController {
     //////student my team
     @RequestMapping(value = "/myteam",method = RequestMethod.GET)
     public String studentMyTeam(Model model){
-        model.addAttribute("myTeam",teamService.getMyTeam(courseService.getCourse().getId(),student.getId()));
-        model.addAttribute("studentList",studentService.getStudentNotInTeam(courseService.getCourse().getId(),student.getId()));
+        model.addAttribute("myTeam",teamService.getMyTeam(courseDetailVO.getId(),student.getId()));
+        model.addAttribute("studentList",studentService.getStudentNotInTeam(courseDetailVO.getId(),student.getId()));
         return "student_myteam";
     }
 
